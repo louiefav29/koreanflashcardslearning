@@ -2,6 +2,13 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Use the global Supabase client
   let supabaseClient;
 
+  // Wait for Supabase client to be available
+  let retries = 0;
+  while (!window.supabaseClient && retries < 10) {
+    await new Promise((resolve) => setTimeout(resolve, 100));
+    retries++;
+  }
+
   // Wait for Supabase client to initialize
   if (window.supabaseClient) {
     await window.supabaseClient.initialize();
