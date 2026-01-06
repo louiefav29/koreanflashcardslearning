@@ -1,0 +1,13 @@
+[project]
+ref = "fdexmgdusliozhxnsovy"
+api_url = "https://fdexmgdusliozhxnsovy.supabase.co"
+db_url = "postgresql://postgres:[YOUR-PASSWORD]@db.fdexmgdusliozhxnsovy.supabase.co:5432/postgres"
+
+[auth]
+site_url = "https://fdexmgdusliozhxnsovy.supabase.co/storage/v1/object/public/website/index.html"
+additional_redirect_urls = ["https://fdexmgdusliozhxnsovy.supabase.co/storage/v1/object/public/website/*"]
+anon_key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZkZXhtZ2R1c2xpb3poeG5zb3Z5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc3MzE5MzEsImV4cCI6MjA4MzMwNzkzMX0.XMQTUGmwEEragSKemiKHkcnHvYRXBHFPXRy_3lLH2Fo"
+
+[storage]
+file_size_limit = "50MiB"
+image_transform_enabled = true

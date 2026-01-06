@@ -1,0 +1,76 @@
+[
+  {
+    "version": "1.6",
+    "title": "Code Quality & Refactoring",
+    "date": "NEW",
+    "changes": [
+      "Refactored large files into smaller, focused modules",
+      "Centralized global configuration and state variables",
+      "Extracted UI logic for settings and stats into separate components"
+    ]
+  },
+  {
+    "version": "1.5",
+    "title": "Analytics & Performance",
+    "date": "Previous",
+    "changes": [
+      "User Analytics: Added learning analytics dashboard to track patterns",
+      "Performance Monitoring: Implemented metrics to identify bottlenecks"
+    ]
+  },
+  {
+    "version": "1.4",
+    "title": "User Experience Polish",
+    "date": "Previous",
+    "changes": [
+      "Enhanced visual feedback for flashcard interactions",
+      "Improved mobile responsiveness for settings modal",
+      "Refined animations for smoother experience"
+    ]
+  },
+  {
+    "version": "1.3",
+    "title": "Algorithm & Experience",
+    "date": "Previous",
+    "changes": [
+      "Smart Algorithm: Prioritizes difficult & overdue cards",
+      "Dynamic XP: Speed bonuses & difficulty rewards",
+      "Fatigue System: Smart break suggestions",
+      "Enhanced UI: Romanization & improved animations",
+      "Voice Support: Audio pronunciation added"
+    ]
+  },
+  {
+    "version": "1.2",
+    "title": "Focus & Polish Update",
+    "date": "Previous",
+    "changes": [
+      "Strict Mode: Lock settings during study sessions",
+      "Bypass Mode: Auto-extend daily goals seamlessly",
+      "Visual Polish: Glass shine effects & floating animations",
+      "Celebrations: Confetti & pulse animations on goal completion",
+      "Improved conflict handling for settings",
+      "Enhanced UI hierarchy and badges"
+    ]
+  },
+  {
+    "version": "1.1",
+    "title": "Core Systems",
+    "date": "Legacy",
+    "changes": [
+      "Added Flashcard study mode with SRS",
+      "Implemented Statistics dashboard",
+      "Created User Profile system"
+    ]
+  },
+  {
+    "version": "1.0",
+    "title": "Initial Release",
+    "date": "Legacy",
+    "changes": [
+      "Project setup and infrastructure",
+      "Basic UI layout and navigation",
+      "Korean font integration"
+    ]
+  }
+]

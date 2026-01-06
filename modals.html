@@ -1,0 +1,523 @@
+<!-- Patch Notes Modal -->
+<dialog id="patch-notes-modal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2 class="modal-title">Patch Notes</h2>
+      <button
+        class="icon-btn close-btn"
+        onclick="closeModal('patch-notes-modal')"
+      >
+        <span class="material-icons-round">close</span>
+      </button>
+    </div>
+    <div class="patch-notes-container modal-scroll-area">
+      <article class="patch-note patch-note-card patch-note-latest">
+        <header class="patch-header patch-header-styled">
+          <span class="patch-version-latest">v1.4 - User Experience Polish</span>
+          <span class="patch-date patch-badge patch-badge-latest">LATEST</span>
+        </header>
+        <ul class="patch-list patch-list-styled">
+          <li class="patch-list-item">
+            <strong>Profile Management:</strong> Editable display name with toast notifications
+          </li>
+          <li class="patch-list-item">
+            <strong>Cursor Behavior:</strong> Smart cursor feedback for interactive elements
+          </li>
+          <li class="patch-list-item">
+            <strong>Clean UI:</strong> Removed duplicate card count displays
+          </li>
+          <li class="patch-list-item">
+            <strong>Toast System:</strong> Non-duplicative notifications for user actions
+          </li>
+          <li>
+            <strong>Visual Polish:</strong> Improved interaction feedback and consistency
+          </li>
+        </ul>
+      </article>
+
+      <article class="patch-note patch-note-card patch-note-previous">
+        <header class="patch-header patch-header-styled">
+          <span class="patch-version-previous">v1.3 - Algorithm & Experience</span>
+          <span class="patch-date patch-badge patch-badge-previous">Previous</span>
+        </header>
+        <ul class="patch-list patch-list-styled">
+          <li class="patch-list-item">
+            <strong>Smart Algorithm:</strong> Prioritizes difficult & overdue cards
+          </li>
+          <li class="patch-list-item">
+            <strong>Dynamic XP:</strong> Speed bonuses & difficulty rewards
+          </li>
+          <li class="patch-list-item">
+            <strong>Fatigue System:</strong> Smart break suggestions
+          </li>
+          <li class="patch-list-item">
+            <strong>Enhanced UI:</strong> Romanization & improved animations
+          </li>
+          <li><strong>Voice Support:</strong> Audio pronunciation added</li>
+        </ul>
+      </article>
+
+      <input
+        type="email"
+        id="patch-notes-email"
+        readonly
+        class="input-readonly-styled"
+      />
+
+      <article class="patch-note patch-note-card patch-note-legacy-1">
+        <header class="patch-header patch-header-styled">
+          <span class="patch-version-legacy">v1.2 - Focus & Polish Update</span>
+          <span class="patch-date patch-badge patch-badge-legacy">Previous</span>
+        </header>
+        <ul class="patch-list patch-list-styled">
+          <li class="patch-list-item">
+            <strong>Strict Mode:</strong> Lock settings during study sessions
+          </li>
+          <li class="patch-list-item">
+            <strong>Bypass Mode:</strong> Auto-extend daily goals seamlessly
+          </li>
+          <li class="patch-list-item">
+            <strong>Visual Polish:</strong> Glass shine effects & floating animations
+          </li>
+          <li class="patch-list-item">
+            <strong>Celebrations:</strong> Confetti & pulse animations on goal completion
+          </li>
+          <li class="patch-list-item">
+            Improved conflict handling for settings
+          </li>
+          <li>Enhanced UI hierarchy and badges</li>
+        </ul>
+      </article>
+
+      <article class="patch-note patch-note-card patch-note-legacy-2">
+        <header class="patch-header patch-header-styled">
+          <span class="patch-version-legacy">v1.1 - Core Systems</span>
+          <span class="patch-date patch-badge patch-badge-legacy">Legacy</span>
+        </header>
+        <ul class="patch-list patch-list-styled">
+          <li class="patch-list-item">Added Flashcard study mode with SRS</li>
+          <li class="patch-list-item">Implemented Statistics dashboard</li>
+          <li>Created User Profile system</li>
+        </ul>
+      </article>
+
+      <article class="patch-note patch-note-card patch-note-legacy-3">
+        <header class="patch-header patch-header-styled">
+          <span class="patch-version-legacy">v1.0 - Initial Release</span>
+          <span class="patch-date patch-badge patch-badge-legacy">Legacy</span>
+        </header>
+        <ul class="patch-list patch-list-styled">
+          <li class="patch-list-item">Project setup and infrastructure</li>
+          <li class="patch-list-item">Basic UI layout and navigation</li>
+          <li>Korean font integration</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</dialog>
+
+<!-- Statistics Modal -->
+<dialog id="stats-modal">
+  <div class="modal-box modal-width-lg">
+    <div class="modal-header">
+      <h2 class="modal-title">Statistics</h2>
+      <button class="icon-btn close-btn" onclick="closeModal('stats-modal')">
+        <span class="material-icons-round">close</span>
+      </button>
+    </div>
+
+    <section class="stats-grid" aria-label="Key Statistics">
+      <article class="stat-item">
+        <div class="stat-item-icon-wrapper">
+          <span class="material-icons-round">flag</span>
+        </div>
+        <div class="stat-value" id="stat-total">0</div>
+        <div class="stat-label">Daily Goal</div>
+      </article>
+      <article class="stat-item">
+        <div class="stat-item-icon-wrapper blue">
+          <span class="material-icons-round">school</span>
+        </div>
+        <div class="stat-value text-blue" id="stat-studied">0</div>
+        <div class="stat-label">Studied</div>
+      </article>
+      <article class="stat-item">
+        <div class="stat-item-icon-wrapper orange">
+          <span class="material-icons-round">schedule</span>
+        </div>
+        <div class="stat-value text-orange" id="stat-due">0</div>
+        <div class="stat-label">Due Now</div>
+      </article>
+      <article class="stat-item">
+        <div class="stat-item-icon-wrapper green">
+          <span class="material-icons-round">verified</span>
+        </div>
+        <div class="stat-value text-green" id="stat-mastered">0</div>
+        <div class="stat-label">Mastered</div>
+      </article>
+    </section>
+
+    <h3 class="section-header">Deck Mastery</h3>
+    <div class="distribution-bar">
+      <div id="dist-new" class="dist-segment new" style="width: 100%"></div>
+      <div id="dist-learning" class="dist-segment learning" style="width: 0%"></div>
+      <div id="dist-mature" class="dist-segment mature" style="width: 0%"></div>
+    </div>
+    <div class="distribution-legend">
+      <span><span class="dot new"></span> New</span>
+      <span><span class="dot learning"></span> Learning</span>
+      <span><span class="dot mature"></span> Mastered</span>
+    </div>
+
+    <hr class="divider" />
+
+    <h3 class="section-header-sm">🧠 Learning Analytics</h3>
+
+    <!-- Performance Metrics -->
+    <section class="analytics-grid" aria-label="Performance Metrics">
+      <div class="metric-card">
+        <div class="metric-value" id="metric-peak-time">--</div>
+        <div class="metric-label">Peak Study Time</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value" id="metric-retention">--%</div>
+        <div class="metric-label">Retention Rate</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value" id="metric-velocity">--</div>
+        <div class="metric-label">Cards / Hour</div>
+      </div>
+    </section>
+
+    <!-- Study Heatmap -->
+    <h3 class="section-header-sm section-header-mt">📅 Study Consistency</h3>
+    <div class="heatmap-container heatmap-wrapper">
+      <canvas id="study-heatmap" height="110"></canvas>
+    </div>
+
+    <!-- Hourly Performance -->
+    <h3 class="section-header-sm section-header-mt">⚡ Hourly Performance</h3>
+    <div class="pattern-chart chart-wrapper">
+      <canvas id="performance-chart" height="150" style="width: 100%"></canvas>
+    </div>
+    <p class="chart-caption">
+      We prioritize difficult cards during your peak performance hours.
+    </p>
+  </div>
+</dialog>
+
+<!-- User Profile Modal -->
+<dialog id="profile-modal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2 class="modal-title">My Profile</h2>
+      <button class="icon-btn close-btn" onclick="closeModal('profile-modal')">
+        <span class="material-icons-round">close</span>
+      </button>
+    </div>
+    <article class="profile-container">
+      <div class="menu-user-profile profile-avatar-lg">
+        <span class="user-initials"></span>
+      </div>
+      <h3 class="profile-name"></h3>
+      <p class="profile-subtitle">Korean Learner since 2023</p>
+
+      <div class="profile-stats-grid">
+        <div class="profile-stat-box">
+          <span class="material-icons-round profile-stat-icon text-orange">local_fire_department</span>
+          <div id="profile-streak" class="profile-stat-value">0</div>
+          <div class="profile-stat-label">Day Streak</div>
+        </div>
+        <div class="profile-stat-box">
+          <span class="material-icons-round profile-stat-icon text-blue">emoji_events</span>
+          <div id="profile-xp" class="profile-stat-value">0</div>
+          <div class="profile-stat-label">Total XP</div>
+        </div>
+      </div>
+    </article>
+  </div>
+</dialog>
+
+<!-- Flashcards Modal -->
+<dialog id="flashcards-modal">
+  <div class="modal-box modal-width-lg">
+    <div class="modal-header">
+      <h2 class="modal-title">Flashcards</h2>
+      <div class="header-controls">
+        <div class="menu-user-profile avatar-sm" onclick="openModal('profile-modal')">
+          <span class="user-initials"></span>
+        </div>
+        <button class="icon-btn notification-icon" aria-label="Notifications" onclick="showPatchNotes()">
+          <span class="material-icons-round">notifications_none</span>
+        </button>
+        <button class="icon-btn stats-icon" aria-label="Statistics" onclick="openStatsModal()">
+          <span class="material-icons-round">insights</span>
+        </button>
+        <button class="icon-btn settings-icon" aria-label="Settings" onclick="openFlashcardSettings()">
+          <span class="material-icons-round">settings</span>
+          <span id="flashcard-settings-badge" class="notification-badge d-none bg-orange" title="Bypass Active">!</span>
+          <span id="flashcard-settings-lock-badge" class="notification-badge d-none bg-red" title="Strict Mode Active">
+            <span class="material-icons-round icon-xs">lock</span>
+          </span>
+        </button>
+        <button class="icon-btn close-btn" onclick="closeModal('flashcards-modal')">
+          <span class="material-icons-round">close</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="session-info">
+      <span>Session Time: <span id="session-timer">00:00</span></span>
+      <span>Cards Remaining: <span id="cards-remaining">20</span></span>
+    </div>
+
+    <div id="fatigue-warning" class="d-none">
+      <span class="material-icons-round">battery_alert</span>
+      <span id="fatigue-msg">Take a break? You've been studying for a while.</span>
+    </div>
+
+    <div class="flashcard-progress-container">
+      <div class="progress-labels">
+        <span>Progress</span>
+        <span id="progress-percentage">0%</span>
+      </div>
+      <div class="progress-bar-track">
+        <div class="progress-bar-fill" style="width: 0%"></div>
+      </div>
+    </div>
+
+    <section class="flashcard-scene" aria-label="Flashcard Area">
+      <div class="flashcard" onclick="this.classList.toggle('is-flipped')">
+        <div class="flashcard-face flashcard-front">
+          <div class="card-status"></div>
+          <span class="korean-word">안녕하세요</span>
+          <button class="icon-btn audio-btn" onclick="playAudio(event)">
+            <span class="material-icons-round">volume_up</span>
+          </button>
+          <span class="hint">
+            <span class="material-icons-round icon-sm">touch_app</span> Tap to flip
+          </span>
+        </div>
+        <div class="flashcard-face flashcard-back">
+          <span class="english-word">Hello</span>
+          <span class="romanization-word">Annyeonghaseyo</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="flashcard-controls controls-gap">
+      <button class="btn btn-again" onclick="rateCard('again')">
+        <span class="btn-icon-lg">✕</span>
+        <span class="btn-text-sm">Again</span>
+      </button>
+      <button class="btn btn-hard" onclick="rateCard('hard')">
+        <span class="btn-icon-lg">⚡</span>
+        <span class="btn-text-sm">Hard</span>
+      </button>
+      <button class="btn btn-good" onclick="rateCard('good')">
+        <span class="btn-icon-lg">✓</span>
+        <span class="btn-text-sm">Good</span>
+      </button>
+      <button class="btn btn-easy" onclick="rateCard('easy')">
+        <span class="btn-icon-lg">★</span>
+        <span class="btn-text-sm">Easy</span>
+      </button>
+    </div>
+  </div>
+</dialog>
+
+<!-- Flashcard Settings Modal -->
+<dialog id="flashcard-settings-modal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2 class="modal-title">Settings</h2>
+      <button class="icon-btn close-btn" onclick="closeModal('flashcard-settings-modal')">
+        <span class="material-icons-round">close</span>
+      </button>
+    </div>
+    <div class="setting-item">
+      <div class="input-group">
+        <label class="input-label">Display Name</label>
+        <div class="input-wrapper">
+          <input id="settings-display-name" type="text" readonly onblur="this.setAttribute('readonly', 'true'); this.style.cursor='pointer';" class="input-field" onfocus="this.style.cursor='text';" />
+          <span class="material-icons-round input-icon-edit" onclick="const el = document.getElementById('settings-display-name'); el.removeAttribute('readonly'); el.focus(); el.style.cursor='text';">edit</span>
+        </div>
+      </div>
+      <div>
+        <label class="input-label">Email Address</label>
+        <input type="email" id="settings-email" readonly class="input-field input-field-readonly" />
+      </div>
+    </div>
+    <div id="settings-lock-message" class="lock-message">
+      <div class="lock-message-content">
+        <span class="material-icons-round lock-icon">lock</span>
+        <span class="font-bold">Strict Mode Active</span>
+      </div>
+      Settings are locked until daily goal is met.
+    </div>
+    <div class="setting-item">
+      <div class="setting-label">Daily Card Limit</div>
+      <div class="slider-container">
+        <input type="range" id="session-limit-slider" min="5" max="50" step="5" value="20" oninput="document.getElementById('session-limit-value').textContent = this.value" class="slider-input" />
+        <span id="session-limit-value" class="slider-value">20</span>
+      </div>
+      <p class="setting-desc">Maximum number of cards to review per day.</p>
+    </div>
+    <div class="setting-item">
+      <div class="setting-label">Study Session Length (Minutes)</div>
+      <div class="slider-container">
+        <input type="range" id="session-length-slider" min="5" max="60" step="5" value="30" oninput="document.getElementById('session-length-value').textContent = this.value" class="slider-input" />
+        <span id="session-length-value" class="slider-value">30</span>
+      </div>
+    </div>
+    <div class="setting-item toggle-layout">
+      <div class="setting-info">
+        <span class="setting-label">Show Romanization</span>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" id="romanization-toggle" checked onchange="handleRomanizationToggle(this)" />
+        <span class="toggle-slider"></span>
+      </label>
+    </div>
+    <div class="setting-item toggle-layout">
+      <div class="setting-label">Smart Fatigue Detection</div>
+      <label class="toggle-switch">
+        <input type="checkbox" id="fatigue-detection-toggle" checked onchange="handleFatigueToggle(this)" />
+        <span class="toggle-slider"></span>
+      </label>
+    </div>
+    <div class="setting-item toggle-layout">
+      <div class="setting-label">Bypass Daily Limit</div>
+      <label class="toggle-switch">
+        <input type="checkbox" id="bypass-limit-toggle" onchange="handleBypassToggle(this)" />
+        <span class="toggle-slider"></span>
+      </label>
+    </div>
+    <div class="setting-item toggle-layout">
+      <div class="setting-label">Strict Mode</div>
+      <label class="toggle-switch">
+        <input type="checkbox" id="strict-mode-toggle" onchange="handleStrictModeToggle(this)" />
+        <span class="toggle-slider"></span>
+      </label>
+    </div>
+    <div class="setting-item">
+      <div class="setting-label">Data Management</div>
+      <div class="modal-actions" style="justify-content: space-between; margin-top: 0.5rem;">
+        <button class="btn btn-outline btn-outline-secondary" style="flex: 1; margin-right: 0.5rem;" onclick="handleBackup()">Backup Data</button>
+        <button class="btn btn-outline btn-outline-secondary" style="flex: 1; margin-left: 0.5rem;" onclick="handleRestore()">Restore Data</button>
+      </div>
+    </div>
+    <div class="modal-actions modal-actions-vertical">
+      <button id="save-settings-btn" class="btn w-100" onclick="saveAllSettings()">Save Changes</button>
+      <button id="reset-settings-btn" class="btn btn-glass-danger w-100" onclick="openModal('reset-confirm-modal')">Reset to Default</button>
+    </div>
+  </div>
+</dialog>
+
+<!-- Reset Confirmation Modal -->
+<dialog id="reset-confirm-modal">
+  <div class="modal-box text-center">
+    <h2 class="modal-title modal-title-mb">Reset Settings?</h2>
+    <p class="modal-desc">This will revert all settings to their default values.</p>
+    <div class="modal-actions">
+      <button class="action-btn cancel" onclick="closeModal('reset-confirm-modal')">
+        <span class="material-icons-round">close</span>
+      </button>
+      <button class="action-btn confirm" onclick="confirmResetSettings()">
+        <span class="material-icons-round">check</span>
+      </button>
+    </div>
+  </div>
+</dialog>
+
+<!-- Limit Warning Modal -->
+<dialog id="limit-warning-modal">
+  <div class="modal-box text-center">
+    <h2 class="modal-title modal-title-mb">Lower Daily Limit?</h2>
+    <p class="modal-desc">
+      You have already reviewed <span id="limit-warning-count" class="text-highlight"></span> cards today. This will complete your daily goal immediately.
+    </p>
+    <div class="modal-actions">
+      <button class="action-btn cancel" onclick="closeModal('limit-warning-modal')">
+        <span class="material-icons-round">close</span>
+      </button>
+      <button class="action-btn confirm" onclick="forceSaveFlashcardSettings()">
+        <span class="material-icons-round">check</span>
+      </button>
+    </div>
+  </div>
+</dialog>
+
+<!-- Bypass Warning Modal -->
+<dialog id="bypass-warning-modal">
+  <div class="modal-box text-center">
+    <h2 class="modal-title modal-title-mb">Enable Bypass Mode?</h2>
+    <p class="modal-desc">This will automatically extend your daily goal when reached. Are you sure?</p>
+    <div class="modal-actions">
+      <button class="action-btn cancel" onclick="closeModal('bypass-warning-modal')">
+        <span class="material-icons-round">close</span>
+      </button>
+      <button class="action-btn confirm" onclick="confirmBypassSettings()">
+        <span class="material-icons-round">check</span>
+      </button>
+    </div>
+  </div>
+</dialog>
+
+<!-- Strict Bypass Conflict Modal -->
+<dialog id="strict-bypass-conflict-modal">
+  <div class="modal-box text-center">
+    <h2 class="modal-title modal-title-mb">Conflict Detected</h2>
+    <p class="modal-desc">Strict Mode and Bypass Mode cannot be active together. Enabling Strict Mode will disable Bypass.</p>
+    <div class="modal-actions">
+      <button class="action-btn cancel" onclick="closeModal('strict-bypass-conflict-modal')">
+        <span class="material-icons-round">close</span>
+      </button>
+      <button class="action-btn confirm" onclick="confirmStrictOverBypass()">
+        <span class="material-icons-round">check</span>
+      </button>
+    </div>
+  </div>
+</dialog>
+
+<!-- Daily Goal Complete Modal -->
+<dialog id="daily-goal-complete-modal">
+  <div class="modal-box text-center">
+    <h2 class="modal-title modal-title-mb">Daily Goal Complete</h2>
+    <p class="modal-desc">
+      You reviewed <span id="goal-complete-count" class="text-highlight"></span> cards today! Take a break or continue studying?
+    </p>
+    <div class="modal-actions modal-actions-vertical">
+      <button class="btn w-100" onclick="enableBypassAndStart()">Bypass & Continue</button>
+      <button class="btn btn-outline btn-outline-secondary w-100" onclick="closeModal('daily-goal-complete-modal')">Close</button>
+    </div>
+  </div>
+</dialog>
+
+<!-- Daily Limit Modal -->
+<dialog id="daily-limit-modal">
+  <div class="modal-box text-center">
+    <h2 class="modal-title modal-title-mb">Daily Limit Reached</h2>
+    <p class="modal-desc">You've hit your daily goal! Take a break or continue studying?</p>
+    <div class="modal-actions modal-actions-vertical">
+      <button class="btn w-100" onclick="enableBypassAndStart()">Bypass & Continue</button>
+      <button class="btn btn-outline btn-outline-secondary w-100" onclick="closeModal('daily-limit-modal')">Close</button>
+    </div>
+  </div>
+</dialog>
+
+<!-- Logout Modal -->
+<dialog id="logout-modal">
+  <div class="modal-box text-center">
+    <h2 class="modal-title modal-title-mb">Log Out</h2>
+    <p class="modal-desc">Are you sure you want to log out?</p>
+    <div class="modal-actions">
+      <button class="action-btn cancel" onclick="closeModal('logout-modal')">
+        <span class="material-icons-round">close</span>
+      </button>
+      <button class="action-btn confirm" onclick="handleLogout()">
+        <span class="material-icons-round">check</span>
+      </button>
+    </div>
+  </div>
+</dialog>

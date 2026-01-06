@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>한국어 마스터</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons+Round&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🇰🇷%3C/text%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="manifest" href="manifest.json" />
+  </head>
+  <body>
+    <div class="bubbles">
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+    </div>
+
+    <header class="user-header">
+      <div class="header-left">
+        <div class="menu-user-profile" onclick="openModal('profile-modal')">
+          <span class="user-initials"></span>
+        </div>
+      </div>
+
+      <div class="header-right">
+        <div class="streak-counter">
+          <span class="material-icons-round">local_fire_department</span>
+          <span>7</span>
+        </div>
+
+        <button
+          class="icon-btn notification-icon"
+          aria-label="Notifications"
+          onclick="showPatchNotes()"
+        >
+          <span class="material-icons-round">notifications_none</span>
+          <span id="notification-badge" class="notification-badge d-none"
+            >1</span
+          >
+        </button>
+
+        <button
+          class="icon-btn stats-icon"
+          aria-label="Statistics"
+          onclick="openStatsModal()"
+        >
+          <span class="material-icons-round">insights</span>
+        </button>
+
+        <button
+          id="install-btn"
+          class="icon-btn d-none"
+          aria-label="Install App"
+        >
+          <span class="material-icons-round">download</span>
+        </button>
+
+        <span class="divider"></span>
+
+        <button
+          class="icon-btn settings-icon"
+          aria-label="Settings"
+          onclick="openFlashcardSettings()"
+        >
+          <span class="material-icons-round">settings</span>
+          <span
+            id="settings-badge"
+            class="notification-badge d-none bg-orange"
+            title="Bypass Active"
+            >!</span
+          >
+          <span
+            id="settings-lock-badge"
+            class="notification-badge d-none bg-red"
+            title="Strict Mode Active"
+            ><span class="material-icons-round icon-xs">lock</span></span
+          >
+        </button>
+
+        <button
+          class="icon-btn logout-btn"
+          aria-label="Logout"
+          onclick="openModal('logout-modal')"
+        >
+          <span class="material-icons-round">logout</span>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <h1 class="main-title">한국어 학습</h1>
+      <p class="subtitle">Korean Learning</p>
+      <p class="description">
+        Master Korean through flashcards, quizzes, and typing practice
+      </p>
+
+      <section class="stats-container" aria-label="Statistics Overview">
+        <div class="stat-card">
+          <div class="stat-icon-wrapper text-blue">
+            <span class="material-icons-round icon-lg">style</span>
+          </div>
+          <div class="stat-number" id="dash-stat-cards">0</div>
+          <div class="stat-label">Cards Studied</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon-wrapper text-green">
+            <span class="material-icons-round icon-lg">quiz</span>
+          </div>
+          <div class="stat-number" id="dash-stat-quizzes">0</div>
+          <div class="stat-label">Quizzes Completed</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon-wrapper text-yellow">
+            <span class="material-icons-round icon-lg">keyboard</span>
+          </div>
+          <div class="stat-number" id="dash-stat-typing">0</div>
+          <div class="stat-label">Typing Tests</div>
+        </div>
+      </section>
+
+      <section class="quiz-modes-container" aria-label="Learning Modes">
+        <!-- Flashcards Section -->
+        <section class="quiz-section quiz-fc">
+          <div class="quiz-icon">
+            <span class="material-icons-round icon-xl">style</span>
+          </div>
+          <h2 class="quiz-title">Flashcards</h2>
+          <p class="quiz-subtitle">
+            Master Korean vocabulary with interactive flashcards
+          </p>
+
+          <div class="quiz-features">
+            <div class="feature-pill">
+              <span class="material-icons-round">timelapse</span> Spaced
+              Repetition
+            </div>
+            <div class="feature-pill">
+              <span class="material-icons-round">volume_up</span> Audio
+              Pronunciation
+            </div>
+            <div class="feature-pill">
+              <span class="material-icons-round">trending_up</span> Progress
+              Tracking
+            </div>
+          </div>
+
+          <button class="start-quiz-btn" onclick="startFlashcards()">
+            Start Flashcards
+          </button>
+        </section>
+
+        <!-- Multiple Choice Section -->
+        <section class="quiz-section quiz-mc">
+          <div class="quiz-icon">
+            <span class="material-icons-round icon-xl">quiz</span>
+          </div>
+          <h2 class="quiz-title">Multiple Choice</h2>
+          <p class="quiz-subtitle">
+            Test your knowledge with multiple choice questions
+          </p>
+
+          <div class="quiz-features">
+            <div class="feature-pill">
+              <span class="material-icons-round">list</span> 4 Options
+            </div>
+            <div class="feature-pill">
+              <span class="material-icons-round">bolt</span> Instant Feedback
+            </div>
+            <div class="feature-pill">
+              <span class="material-icons-round">score</span> Score Tracking
+            </div>
+          </div>
+
+          <button class="start-quiz-btn" disabled>Coming Soon</button>
+        </section>
+
+        <!-- Typing Test Section -->
+        <section class="quiz-section quiz-tt">
+          <div class="quiz-icon">
+            <span class="material-icons-round icon-xl">keyboard</span>
+          </div>
+          <h2 class="quiz-title">Typing Test</h2>
+          <p class="quiz-subtitle">Practice Korean typing skills and speed</p>
+
+          <div class="quiz-features">
+            <div class="feature-pill">Hangul Practice</div>
+            <div class="feature-pill">Speed Test</div>
+            <div class="feature-pill">Accuracy Score</div>
+          </div>
+
+          <button class="start-quiz-btn" disabled>Coming Soon</button>
+        </section>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <div class="footer-content">
+        <p>&copy; 2024 Korean Flashcards Learning. All rights reserved.</p>
+        <div class="footer-links">
+          <a href="#" onclick="return false;">Privacy Policy</a>
+          <span class="separator">•</span>
+          <a href="#" onclick="return false;">Terms of Service</a>
+          <span class="separator">•</span>
+          <span class="version">v1.3</span>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast-container" popover="manual"></div>
+
+    <!-- Modals Container -->
+    <div id="modals-container"></div>
+
+    <script src="js/config.js"></script>
+    <script src="js/error-handler.js"></script>
+    <script src="js/security.js"></script>
+    <script src="js/logger.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/supabase-client.js"></script>
+    <script src="js/ui-utils.js"></script>
+    <script src="js/flashcards-data.js"></script>
+    <script src="js/flashcards.js"></script>
+    <script src="js/analytics.js"></script>
+    <script src="js/effects.js"></script>
+    <script src="js/patch-notes.js"></script>
+    <script src="js/settings-ui.js"></script>
+    <script src="js/stats-ui.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/state-manager.js"></script>
+    <script>
+      // Service Worker Registration
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker
+            .register("service-worker.js")
+            .then((registration) => {
+              Logger.info("ServiceWorker", "Registration successful");
+            })
+            .catch((err) => {
+              Logger.error("ServiceWorker", "Registration failed", err);
+            });
+        });
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        loadComponents();
+      });
+
+      async function loadComponents() {
+        const container = document.getElementById("modals-container");
+        if (!container) return;
+
+        try {
+          const response = await fetch("modals.html");
+          if (!response.ok) throw new Error("Failed to load components");
+          const html = await response.text();
+          container.innerHTML = html;
+
+          if (typeof loadSettings === "function") loadSettings();
+          loadUserProfile(); // Re-run to update modal elements
+        } catch (error) {
+          Logger.error("UI", "Error loading components", error);
+        }
+      }
+
+      function loadUserProfile() {
+        const profile = StateManager.initProfile();
+
+        updateProfileDisplay(profile);
+      }
+
+      function updateProfileDisplay(profile) {
+        // Update Name Display
+        const profileNameEl = document.querySelector(".profile-name");
+        if (profileNameEl) profileNameEl.textContent = profile.name;
+
+        // Update Initials
+        const initials = profile.name
+          .split(" ")
+          .map((n) => n[0])
+          .join("")
+          .substring(0, 2)
+          .toUpperCase();
+
+        document
+          .querySelectorAll(".user-initials")
+          .forEach((el) => (el.textContent = initials));
+
+        // Update Inputs
+        const nameInput = document.getElementById("settings-display-name");
+        if (nameInput) nameInput.value = profile.name;
+
+        const emailInputs = [
+          document.getElementById("settings-email"),
+          document.getElementById("patch-notes-email"),
+        ];
+        emailInputs.forEach((input) => {
+          if (input) input.value = profile.email;
+        });
+      }
+
+      function saveAllSettings() {
+        const nameInput = document.getElementById("settings-display-name");
+
+        const profile = StateManager.getUserProfile();
+        const newName = nameInput?.value.trim();
+        let nameChanged = false;
+
+        if (nameInput && newName && newName !== profile.name) {
+          try {
+            const updated = StateManager.updateProfile({ name: newName });
+            updateProfileDisplay(updated);
+            nameChanged = true;
+            showToast(
+              "Profile Updated",
+              `Your display name is now "${newName}"`,
+              "success"
+            );
+          } catch (e) {
+            showToast("Update Failed", e.message, "error");
+            // Reset input to valid value
+            nameInput.value = profile.name;
+            return;
+          }
+        }
+
+        // Only save flashcard settings if name wasn't the only thing changed
+        if (typeof saveFlashcardSettings === "function") {
+          saveFlashcardSettings(nameChanged);
+        }
+      }
+
+      function handleLogout() {
+        window.location.href = "login.html";
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KFL Test Suite</title>
+    <style>
+        body { background: #0f172a; color: #fff; font-family: monospace; padding: 2rem; }
+        h1 { color: #667eea; }
+    </style>
+</head>
+<body>
+    <h1>Running Tests...</h1>
+    <p>Check the browser console (F12) for detailed results.</p>
+
+    <!-- App Dependencies -->
+    <script src="js/logger.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/state-manager.js"></script>
+    <script src="js/ui-utils.js"></script>
+    <script src="js/analytics.js"></script>
+    <script src="js/game.js"></script>
+    <!-- Note: script.js is excluded to prevent side-effects like auto-loading data -->
+    
+    <!-- Test Framework -->
+    <script src="tests/test-runner.js"></script>
+
+    <!-- Test Suites -->
+    <script src="tests/core.test.js"></script>
+</body>
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>System Logs - 한국어 마스터</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons+Round"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="manifest" href="manifest.json" />
+    <style>
+      .log-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+      }
+      .log-card {
+        background: var(--card-bg);
+        border: 1px solid var(--card-border-color);
+        border-radius: 16px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        backdrop-filter: blur(20px);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+      .log-card:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--card-hover-shadow);
+        border-color: rgba(255, 255, 255, 0.15);
+      }
+      .log-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+      .version-badge {
+        padding: 0.25rem 0.75rem;
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 0.9rem;
+        color: #000;
+      }
+      .log-list {
+        list-style: none;
+        padding-left: 0.5rem;
+      }
+      .log-list li {
+        position: relative;
+        padding-left: 1.5rem;
+        margin-bottom: 0.5rem;
+        color: var(--text-secondary);
+        line-height: 1.6;
+      }
+      .log-list li::before {
+        content: "•";
+        position: absolute;
+        left: 0;
+        color: var(--accent-blue);
+        font-weight: bold;
+      }
+      .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--text-secondary);
+        text-decoration: none;
+        margin-bottom: 2rem;
+        transition: color 0.2s ease;
+      }
+      .back-link:hover {
+        color: var(--primary);
+      }
+      @media (max-width: 600px) {
+        .log-header {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 0.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bubbles">
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+    </div>
+
+    <main class="log-container">
+      <a href="index.html" class="back-link">
+        <span class="material-icons-round">arrow_back</span>
+        Back to Dashboard
+      </a>
+
+      <h1 class="main-title" style="text-align: left; margin-bottom: 0.5rem">System Logs</h1>
+      <p class="subtitle" style="text-align: left; margin-bottom: 2rem; font-size: 1.1rem">
+        Track updates, improvements, and changes.
+      </p>
+
+      <!-- v1.4 -->
+      <article class="log-card">
+        <header class="log-header">
+          <div style="display: flex; align-items: center; gap: 1rem">
+            <span class="version-badge" style="background: var(--accent-green)">v1.4</span>
+            <h3 style="margin: 0; font-size: 1.2rem">User Experience Polish</h3>
+          </div>
+          <span style="font-size: 0.85rem; font-weight: 700; color: var(--accent-green)">LATEST</span>
+        </div>
+        <ul class="log-list">
+          <li><strong>Profile Management:</strong> Editable display name with toast notifications</li>
+          <li><strong>Cursor Behavior:</strong> Smart cursor feedback for interactive elements</li>
+          <li><strong>Clean UI:</strong> Removed duplicate card count displays</li>
+          <li><strong>Toast System:</strong> Non-duplicative notifications for user actions</li>
+          <li><strong>Visual Polish:</strong> Improved interaction feedback and consistency</li>
+        </ul>
+      </article>
+
+      <!-- v1.3 -->
+      <article class="log-card">
+        <header class="log-header">
+          <div style="display: flex; align-items: center; gap: 1rem">
+            <span class="version-badge" style="background: var(--accent-blue)">v1.3</span>
+            <h3 style="margin: 0; font-size: 1.2rem">Algorithm & Experience</h3>
+          </div>
+          <span style="font-size: 0.85rem; color: var(--text-secondary)">Previous</span>
+        </div>
+        <ul class="log-list">
+          <li><strong>Smart Algorithm:</strong> Prioritizes difficult & overdue cards</li>
+          <li><strong>Dynamic XP:</strong> Speed bonuses & difficulty rewards</li>
+          <li><strong>Fatigue System:</strong> Smart break suggestions</li>
+          <li><strong>Enhanced UI:</strong> Romanization & improved animations</li>
+          <li><strong>Voice Support:</strong> Audio pronunciation added</li>
+        </ul>
+      </article>
+
+      <!-- v1.2 -->
+      <article class="log-card">
+        <header class="log-header">
+          <div style="display: flex; align-items: center; gap: 1rem">
+            <span class="version-badge" style="background: rgba(255, 255, 255, 0.2); color: white">v1.2</span>
+            <h3 style="margin: 0; font-size: 1.2rem">Focus & Polish Update</h3>
+          </div>
+          <span style="font-size: 0.85rem; color: var(--text-secondary)">Previous</span>
+        </div>
+        <ul class="log-list">
+          <li><strong>Strict Mode:</strong> Lock settings during study sessions</li>
+          <li><strong>Bypass Mode:</strong> Auto-extend daily goals seamlessly</li>
+          <li><strong>Visual Polish:</strong> Glass shine effects & floating animations</li>
+          <li><strong>Celebrations:</strong> Confetti & pulse animations on goal completion</li>
+          <li>Improved conflict handling for settings</li>
+          <li>Enhanced UI hierarchy and badges</li>
+        </ul>
+      </article>
+
+      <!-- v1.1 -->
+      <article class="log-card">
+        <header class="log-header">
+          <div style="display: flex; align-items: center; gap: 1rem">
+            <span class="version-badge" style="background: rgba(255, 255, 255, 0.1); color: white">v1.1</span>
+            <h3 style="margin: 0; font-size: 1.2rem">Core Systems</h3>
+          </div>
+          <span style="font-size: 0.85rem; color: var(--text-secondary)">Legacy</span>
+        </div>
+        <ul class="log-list">
+          <li>Added Flashcard study mode with SRS</li>
+          <li>Implemented Statistics dashboard</li>
+          <li>Created User Profile system</li>
+        </ul>
+      </article>
+
+      <!-- v1.0 -->
+      <article class="log-card">
+        <header class="log-header">
+          <div style="display: flex; align-items: center; gap: 1rem">
+            <span class="version-badge" style="background: rgba(255, 255, 255, 0.1); color: white">v1.0</span>
+            <h3 style="margin: 0; font-size: 1.2rem">Initial Release</h3>
+          </div>
+          <span style="font-size: 0.85rem; color: var(--text-secondary)">Legacy</span>
+        </div>
+        <ul class="log-list">
+          <li>Project setup and infrastructure</li>
+          <li>Basic UI layout and navigation</li>
+          <li>Korean font integration</li>
+        </ul>
+      </article>
+    </main>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        requestAnimationFrame(() => {
+          document.body.classList.add("loaded");
+        });
+      });
+    </script>
+  </body>
+</html>

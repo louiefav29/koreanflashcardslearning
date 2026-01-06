@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up - 한국어 마스터</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons+Round&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="manifest" href="manifest.json" />
+    <style>
+      body {
+        align-items: center;
+        justify-content: center;
+      }
+      .login-card {
+        width: 100%;
+        max-width: 400px;
+        margin: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bubbles">
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+    </div>
+
+    <main style="width: 100%; display: flex; justify-content: center;">
+      <section class="card login-card">
+        <div style="text-align: center; margin-bottom: 2rem;">
+          <h1 style="font-size: 2rem; margin-bottom: 0.5rem;">Create Account</h1>
+          <p style="color: var(--text-secondary);">Start your learning journey</p>
+        </div>
+
+        <form onsubmit="handleSignup(event)">
+          <div style="margin-bottom: 1rem">
+            <label style="display: block; color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 0.5rem">Full Name</label>
+            <input type="text" required placeholder="John Doe" style="width: 100%; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--card-border-color); padding: 0.75rem; border-radius: 12px; color: var(--text-primary); outline: none;" />
+          </div>
+          <div style="margin-bottom: 1rem">
+            <label style="display: block; color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 0.5rem">Email</label>
+            <input type="email" required placeholder="john@example.com" style="width: 100%; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--card-border-color); padding: 0.75rem; border-radius: 12px; color: var(--text-primary); outline: none;" />
+          </div>
+          <div style="margin-bottom: 1.5rem">
+            <label style="display: block; color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 0.5rem">Password</label>
+            <input type="password" required placeholder="Create a password" style="width: 100%; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--card-border-color); padding: 0.75rem; border-radius: 12px; color: var(--text-primary); outline: none;" />
+          </div>
+          <button type="submit" class="btn" style="width: 100%; margin-bottom: 1rem">Create Account</button>
+          <p style="font-size: 0.9rem; color: var(--text-secondary); text-align: center">
+            Already have an account? <a href="login.html" style="color: var(--primary); text-decoration: none; font-weight: 600">Log In</a>
+          </p>
+        </form>
+      </section>
+    </main>
+
+    <script src="js/security.js"></script>
+    <script src="js/logger.js"></script>
+    <script src="js/state-manager.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        requestAnimationFrame(() => {
+          document.body.classList.add("loaded");
+        });
+      });
+
+      function handleSignup(event) {
+        event.preventDefault();
+        
+        const nameInput = event.target.querySelector('input[type="text"]');
+        const emailInput = event.target.querySelector('input[type="email"]');
+        
+        try {
+          StateManager.updateProfile({
+            name: nameInput.value,
+            email: emailInput.value,
+            joined: new Date().toLocaleDateString()
+          });
+          
+          alert('Account created! You can now log in.');
+          document.body.classList.remove("loaded");
+          setTimeout(() => {
+            window.location.href = 'login.html';
+          }, 500);
+        } catch (e) {
+          alert(e.message);
+        }
+      }
+    </script>
+  </body>
+</html>
