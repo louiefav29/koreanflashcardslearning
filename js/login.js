@@ -1,4 +1,9 @@
 document.addEventListener("DOMContentLoaded", async () => {
+  // Reveal the UI
+  requestAnimationFrame(() => {
+    document.body.classList.add("loaded");
+  });
+
   // SECURITY CRITICAL: Force clear any existing Supabase tokens from LocalStorage.
   // This ensures that even if signOut() fails (e.g. network error), the session is destroyed locally.
   Object.keys(localStorage).forEach((key) => {
