@@ -79,14 +79,17 @@ document.addEventListener("DOMContentLoaded", async () => {
           window.supabaseClient.currentUser = data.user;
           
           const profile = await window.supabaseClient.getUserProfile();
-          if (profile) {
-            StateManager.updateProfile({
-              name: profile.full_name || data.user.user_metadata?.full_name || "Student",
-              email: data.user.email,
-              studentId: profile.student_id || data.user.user_metadata?.student_id,
-              joined: new Date(data.user.created_at).toLocaleDateString()
-            });
-          }
+          const meta = data.user.user_metadata || {};
+          
+          // Fallback: DB Profile -> Auth Metadata -> Email Username
+          const name = profile?.full_name || meta.full_name || data.user.email.split('@')[0];
+          
+          StateManager.updateProfile({
+            name: name,
+            email: data.user.email,
+            studentId: profile?.student_id || meta.student_id,
+            joined: new Date(data.user.created_at).toLocaleDateString()
+          });
         } catch (err) {
           console.warn("Profile sync warning:", err);
         }

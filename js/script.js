@@ -425,18 +425,22 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       // SYNC PROFILE: Ensure local UI matches server data (fixes "Guest User" on new devices)
       window.supabaseClient.getUserProfile().then(profile => {
-        if (profile) {
-          const updated = StateManager.updateProfile({
-            name: profile.full_name || window.supabaseClient.currentUser.user_metadata?.full_name || "Student",
-            email: window.supabaseClient.currentUser.email,
-            studentId: profile.student_id || window.supabaseClient.currentUser.user_metadata?.student_id,
-            joined: new Date(window.supabaseClient.currentUser.created_at).toLocaleDateString()
-          });
-          
-          // Update UI immediately if function is available
-          if (typeof updateProfileDisplay === 'function') {
-            updateProfileDisplay(updated);
-          }
+        const user = window.supabaseClient.currentUser;
+        const meta = user.user_metadata || {};
+        
+        // Fallback: DB Profile -> Auth Metadata -> Email Username
+        const name = profile?.full_name || meta.full_name || user.email.split('@')[0];
+
+        const updated = StateManager.updateProfile({
+          name: name,
+          email: user.email,
+          studentId: profile?.student_id || meta.student_id,
+          joined: new Date(user.created_at).toLocaleDateString()
+        });
+        
+        // Update UI immediately if function is available
+        if (typeof updateProfileDisplay === 'function') {
+          updateProfileDisplay(updated);
         }
       }).catch(e => console.warn("Background profile sync failed", e));
     }
