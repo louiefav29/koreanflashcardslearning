@@ -173,6 +173,35 @@ async function handleLogout() {
   }, 500);
 }
 
+async function handlePasswordUpdate(event) {
+  event.preventDefault();
+  const passwordInput = document.getElementById("new-password");
+  const btn = event.target.querySelector("button");
+  const originalText = btn.textContent;
+
+  if (!passwordInput || !passwordInput.value) return;
+
+  try {
+    btn.disabled = true;
+    btn.textContent = "Updating...";
+
+    const { success, error } = await window.supabaseClient.updatePassword(
+      passwordInput.value
+    );
+
+    if (!success) throw new Error(error);
+
+    showToast("Success", "Password updated successfully", "success");
+    closeModal("update-password-modal");
+    window.history.replaceState(null, null, window.location.pathname); // Clean URL
+  } catch (e) {
+    showToast("Error", e.message, "error");
+  } finally {
+    btn.disabled = false;
+    btn.textContent = originalText;
+  }
+}
+
 function loadUserProgress() {
   try {
     const saved = safeStorageGet(STORAGE_KEYS.USER_PROGRESS);
@@ -383,9 +412,33 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (window.supabaseClient) {
     await window.supabaseClient.initialize();
 
+    // Listen for password recovery event
+    window.supabaseClient.client.auth.onAuthStateChange((event, session) => {
+      if (event === "PASSWORD_RECOVERY") {
+        openModal("update-password-modal");
+      }
+    });
+
     // Auth Check: Redirect to login if no user session
     if (window.supabaseClient.currentUser) {
       authenticated = true;
+
+      // SYNC PROFILE: Ensure local UI matches server data (fixes "Guest User" on new devices)
+      window.supabaseClient.getUserProfile().then(profile => {
+        if (profile) {
+          const updated = StateManager.updateProfile({
+            name: profile.full_name || window.supabaseClient.currentUser.user_metadata?.full_name || "Student",
+            email: window.supabaseClient.currentUser.email,
+            studentId: profile.student_id || window.supabaseClient.currentUser.user_metadata?.student_id,
+            joined: new Date(window.supabaseClient.currentUser.created_at).toLocaleDateString()
+          });
+          
+          // Update UI immediately if function is available
+          if (typeof updateProfileDisplay === 'function') {
+            updateProfileDisplay(updated);
+          }
+        }
+      }).catch(e => console.warn("Background profile sync failed", e));
     }
   }
 

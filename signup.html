@@ -93,13 +93,14 @@
           }
           await window.supabaseClient.initialize();
 
-          const { success, error } = await window.supabaseClient.signUp(emailInput.value, passwordInput.value);
+          const { success, error, data } = await window.supabaseClient.signUp(emailInput.value, passwordInput.value, nameInput.value);
           if (!success) throw new Error(error);
 
           StateManager.updateProfile({
             name: nameInput.value,
             email: emailInput.value,
-            joined: new Date().toLocaleDateString()
+            joined: new Date().toLocaleDateString(),
+            studentId: data?.user?.user_metadata?.student_id
           });
           
           alert('Account created! Please check your email to confirm, then log in.');

@@ -242,6 +242,23 @@
     <!-- Modals Container -->
     <div id="modals-container"></div>
 
+    <!-- Update Password Modal (For Recovery Flow) -->
+    <dialog id="update-password-modal" class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title">Update Password</h3>
+      </div>
+      <p class="modal-desc">Please set a new password for your account.</p>
+      <form onsubmit="handlePasswordUpdate(event)">
+        <div style="margin-bottom: 1.5rem;">
+          <label class="input-label">New Password</label>
+          <input type="password" id="new-password" class="input-field" required minlength="6" placeholder="Enter new password" />
+        </div>
+        <div class="modal-actions">
+          <button type="submit" class="btn">Update Password</button>
+        </div>
+      </form>
+    </dialog>
+
     <script src="js/config.js"></script>
     <script src="js/error-handler.js"></script>
     <script src="js/security.js"></script>

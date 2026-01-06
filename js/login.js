@@ -73,6 +73,24 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         if (error) throw error;
 
+        // SYNC PROFILE: Fetch user details from database to populate local storage
+        try {
+          // Update the wrapper's current user so getUserProfile works
+          window.supabaseClient.currentUser = data.user;
+          
+          const profile = await window.supabaseClient.getUserProfile();
+          if (profile) {
+            StateManager.updateProfile({
+              name: profile.full_name || data.user.user_metadata?.full_name || "Student",
+              email: data.user.email,
+              studentId: profile.student_id || data.user.user_metadata?.student_id,
+              joined: new Date(data.user.created_at).toLocaleDateString()
+            });
+          }
+        } catch (err) {
+          console.warn("Profile sync warning:", err);
+        }
+
         // Success
         showToast("Login Successful!", "success");
         setTimeout(() => {

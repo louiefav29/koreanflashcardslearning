@@ -43,13 +43,21 @@ class SupabaseClient {
   }
 
   // Authentication methods
-  async signUp(email, password) {
+  async signUp(email, password, fullName) {
     try {
+      // Generate a custom Student ID (e.g., KFL + 5 random digits)
+      // For strictly sequential IDs (KFL10000, KFL10001), you would need a SQL Sequence in Supabase.
+      const studentId = `KFL${Math.floor(10000 + Math.random() * 90000)}`;
+
       const { data, error } = await this.client.auth.signUp({
         email,
         password,
         options: {
           emailRedirectTo: "https://koreanflashcardslearning.netlify.app/login.html",
+          data: {
+            full_name: fullName,
+            student_id: studentId
+          }
         },
       });
 
@@ -101,6 +109,18 @@ class SupabaseClient {
           redirectTo: "https://koreanflashcardslearning.netlify.app/index.html",
         }
       );
+      if (error) throw error;
+      return { success: true, data };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  }
+
+  async updatePassword(newPassword) {
+    try {
+      const { data, error } = await this.client.auth.updateUser({
+        password: newPassword,
+      });
       if (error) throw error;
       return { success: true, data };
     } catch (error) {
@@ -215,6 +235,8 @@ class SupabaseClient {
       const { error } = await this.client.from("users").insert({
         id: user.id,
         email: user.email,
+        full_name: user.user_metadata?.full_name,
+        student_id: user.user_metadata?.student_id
       });
 
       if (error) throw error;

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kfl-v1.27';
+const CACHE_NAME = 'kfl-v1.33';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -24,6 +24,7 @@ const ASSETS_TO_CACHE = [
   'js/stats-ui.js',
   'js/login.js',
   'js/flashcards.js',
+  'js/supabase-client.js',
   './patchNote.json',
   './manifest.json'
 ];
