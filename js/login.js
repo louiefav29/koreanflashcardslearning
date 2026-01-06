@@ -1,4 +1,12 @@
 document.addEventListener("DOMContentLoaded", async () => {
+  // SECURITY CRITICAL: Force clear any existing Supabase tokens from LocalStorage.
+  // This ensures that even if signOut() fails (e.g. network error), the session is destroyed locally.
+  Object.keys(localStorage).forEach((key) => {
+    if (key.startsWith("sb-") && key.endsWith("-auth-token")) {
+      localStorage.removeItem(key);
+    }
+  });
+
   // Attempt early initialization, but don't block the UI if it fails yet
   if (window.supabaseClient) {
     try {

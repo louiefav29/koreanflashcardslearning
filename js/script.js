@@ -390,6 +390,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   if (!authenticated) {
+    document.body.style.display = 'none'; // Prevent any interaction/viewing
     window.location.href = 'login.html';
     return;
   }
