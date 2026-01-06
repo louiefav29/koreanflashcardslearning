@@ -1,11 +1,12 @@
 // Supabase Client Configuration
 class SupabaseClient {
   constructor() {
+    // Use environment variables if available, otherwise fallback to hardcoded values
     this.supabaseUrl =
-      import.meta.env.VITE_SUPABASE_URL ||
+      (typeof window !== "undefined" && window.VITE_SUPABASE_URL) ||
       "https://fdexmgdusliozhxnsovy.supabase.co";
     this.supabaseKey =
-      import.meta.env.VITE_SUPABASE_ANON_KEY ||
+      (typeof window !== "undefined" && window.VITE_SUPABASE_ANON_KEY) ||
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZkZXhtZ2R1c2xpb3poeG5zb3Z5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc3MzE5MzEsImV4cCI6MjA4MzMwNzkzMX0.XMQTUGmwEEragSKemiKHkcnHvYRXBHFPXRy_3lLH2Fo";
     this.client = null;
     this.currentUser = null;
