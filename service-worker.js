@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kfl-v1.34';
+const CACHE_NAME = 'kfl-v1.37';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',

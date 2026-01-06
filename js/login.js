@@ -95,7 +95,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         // Success
-        showToast("Login Successful!", "success");
+        showToast("Success", "Login Successful!", "success");
         setTimeout(() => {
           window.location.href = "index.html";
         }, 1000);
@@ -104,9 +104,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         // RESTRICTION: Handle unmatched email/password specifically
         if (error.message === "Invalid login credentials") {
-          showToast("Incorrect email or password. Please try again.", "error");
+          showToast("Login Failed", "Incorrect email or password. Please try again.", "error");
         } else {
           showToast(
+            "Login Error",
             error.message || "An error occurred during login.",
             "error"
           );
@@ -119,67 +120,3 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 });
-
-function showToast(message, type = "info") {
-  const container = document.getElementById("toast-container");
-
-  if (!container) {
-    alert(message);
-    return;
-  }
-
-  // Ensure container is visible if it uses popover API
-  try {
-    if (container.showPopover) container.showPopover();
-  } catch (e) {}
-
-  const toast = document.createElement("div");
-
-  // Styling based on type
-  const bgColor =
-    type === "error"
-      ? "rgba(220, 38, 38, 0.95)"
-      : type === "success"
-      ? "rgba(22, 163, 74, 0.95)"
-      : "rgba(30, 41, 59, 0.95)";
-
-  toast.style.cssText = `
-    background: ${bgColor};
-    color: white;
-    padding: 12px 24px;
-    border-radius: 12px;
-    margin-bottom: 10px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(255,255,255,0.1);
-    font-size: 0.9rem;
-    animation: slideIn 0.3s ease-out forwards;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  `;
-
-  const icon =
-    type === "error" ? "error" : type === "success" ? "check_circle" : "info";
-  toast.innerHTML = `<span class="material-icons-round" style="font-size: 1.2rem">${icon}</span> ${message}`;
-
-  container.appendChild(toast);
-
-  // Auto remove after 3 seconds
-  setTimeout(() => {
-    toast.style.opacity = "0";
-    toast.style.transform = "translateY(-10px)";
-    toast.style.transition = "all 0.3s ease";
-    setTimeout(() => toast.remove(), 300);
-  }, 3000);
-}
-
-// Inject animation styles
-const style = document.createElement("style");
-style.textContent = `
-  @keyframes slideIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-`;
-document.head.appendChild(style);

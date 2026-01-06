@@ -53,59 +53,6 @@ function performSaveSettings(nameChanged = false) {
   }
 }
 
-function handleBackup() {
-  try {
-    const data = window.backupData();
-    const blob = new Blob([data], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `kfl_backup_${new Date().toISOString().split("T")[0]}.json`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-    showToast("Backup Created", "Your progress has been exported", "success");
-  } catch (e) {
-    showToast("Backup Failed", "Could not export data", "error");
-  }
-}
-
-function handleRestore() {
-  const input = document.createElement("input");
-  input.type = "file";
-  input.accept = ".json";
-  input.onchange = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      try {
-        const success = window.restoreData(event.target.result);
-        if (success) {
-          showToast(
-            "Restore Successful",
-            "App will reload in 2 seconds...",
-            "success"
-          );
-          setTimeout(() => window.location.reload(), 2000);
-        } else {
-          showToast(
-            "Restore Failed",
-            "No valid data found in backup",
-            "warning"
-          );
-        }
-      } catch (err) {
-        showToast("Restore Failed", "Invalid backup file", "error");
-      }
-    };
-    reader.readAsText(file);
-  };
-  input.click();
-}
-
 function enableBypassAndStart(auto = false) {
   // Instead of infinite bypass, extend the daily limit by the current limit amount
   const extensionAmount = dailyLimit;
@@ -413,11 +360,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     await window.supabaseClient.initialize();
 
     // Listen for password recovery event
-    window.supabaseClient.client.auth.onAuthStateChange((event, session) => {
-      if (event === "PASSWORD_RECOVERY") {
-        openModal("update-password-modal");
-      }
-    });
+    if (window.supabaseClient.client) {
+      window.supabaseClient.client.auth.onAuthStateChange((event, session) => {
+        if (event === "PASSWORD_RECOVERY") {
+          openModal("update-password-modal");
+        }
+      });
+    }
 
     // Auth Check: Redirect to login if no user session
     if (window.supabaseClient.currentUser) {
