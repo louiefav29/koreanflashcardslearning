@@ -373,14 +373,19 @@ function updateSettingsBadge() {
 // Initialize on load
 document.addEventListener("DOMContentLoaded", async () => {
   // Initialize Supabase first
+  let authenticated = false;
   if (window.supabaseClient) {
     await window.supabaseClient.initialize();
 
     // Auth Check: Redirect to login if no user session
-    if (!window.supabaseClient.currentUser) {
-      window.location.href = 'login.html';
-      return;
+    if (window.supabaseClient.currentUser) {
+      authenticated = true;
     }
+  }
+
+  if (!authenticated) {
+    window.location.href = 'login.html';
+    return;
   }
 
   loadUserProgress();

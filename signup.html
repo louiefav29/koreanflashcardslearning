@@ -36,115 +36,29 @@
       <div class="bubble"></div>
     </div>
 
-    <main style="width: 100%; display: flex; justify-content: center">
+    <main style="width: 100%; display: flex; justify-content: center;">
       <section class="card login-card">
-        <div style="text-align: center; margin-bottom: 2rem">
-          <h1 style="font-size: 2rem; margin-bottom: 0.5rem">Create Account</h1>
-          <p style="color: var(--text-secondary)">
-            Start your learning journey
-          </p>
+        <div style="text-align: center; margin-bottom: 2rem;">
+          <h1 style="font-size: 2rem; margin-bottom: 0.5rem;">Create Account</h1>
+          <p style="color: var(--text-secondary);">Start your learning journey</p>
         </div>
 
         <form onsubmit="handleSignup(event)">
           <div style="margin-bottom: 1rem">
-            <label
-              style="
-                display: block;
-                color: var(--text-secondary);
-                font-size: 0.85rem;
-                margin-bottom: 0.5rem;
-              "
-              >Full Name</label
-            >
-            <input
-              type="text"
-              required
-              placeholder="John Doe"
-              style="
-                width: 100%;
-                background: rgba(255, 255, 255, 0.05);
-                border: 1px solid var(--card-border-color);
-                padding: 0.75rem;
-                border-radius: 12px;
-                color: var(--text-primary);
-                outline: none;
-              "
-            />
+            <label style="display: block; color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 0.5rem">Full Name</label>
+            <input type="text" required placeholder="John Doe" style="width: 100%; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--card-border-color); padding: 0.75rem; border-radius: 12px; color: var(--text-primary); outline: none;" />
           </div>
           <div style="margin-bottom: 1rem">
-            <label
-              style="
-                display: block;
-                color: var(--text-secondary);
-                font-size: 0.85rem;
-                margin-bottom: 0.5rem;
-              "
-              >Email</label
-            >
-            <input
-              type="email"
-              required
-              placeholder="john@example.com"
-              style="
-                width: 100%;
-                background: rgba(255, 255, 255, 0.05);
-                border: 1px solid var(--card-border-color);
-                padding: 0.75rem;
-                border-radius: 12px;
-                color: var(--text-primary);
-                outline: none;
-              "
-            />
+            <label style="display: block; color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 0.5rem">Email</label>
+            <input type="email" required placeholder="john@example.com" style="width: 100%; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--card-border-color); padding: 0.75rem; border-radius: 12px; color: var(--text-primary); outline: none;" />
           </div>
           <div style="margin-bottom: 1.5rem">
-            <label
-              style="
-                display: block;
-                color: var(--text-secondary);
-                font-size: 0.85rem;
-                margin-bottom: 0.5rem;
-              "
-              >Password</label
-            >
-            <input
-              type="password"
-              required
-              placeholder="Create a password"
-              style="
-                width: 100%;
-                background: rgba(255, 255, 255, 0.05);
-                border: 1px solid var(--card-border-color);
-                padding: 0.75rem;
-                border-radius: 12px;
-                color: var(--text-primary);
-                outline: none;
-              "
-            />
+            <label style="display: block; color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 0.5rem">Password</label>
+            <input type="password" required placeholder="Create a password" style="width: 100%; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--card-border-color); padding: 0.75rem; border-radius: 12px; color: var(--text-primary); outline: none;" />
           </div>
-          <button
-            type="submit"
-            class="btn"
-            style="width: 100%; margin-bottom: 1rem"
-          >
-            Create Account
-          </button>
-          <p
-            style="
-              font-size: 0.9rem;
-              color: var(--text-secondary);
-              text-align: center;
-            "
-          >
-            Already have an account?
-            <a
-              href="login.html"
-              style="
-                color: var(--primary);
-                text-decoration: none;
-                font-weight: 600;
-              "
-              >Log In</a
-            >
+          <button type="submit" class="btn" style="width: 100%; margin-bottom: 1rem">Create Account</button>
+          <p style="font-size: 0.9rem; color: var(--text-secondary); text-align: center">
+            Already have an account? <a href="login.html" style="color: var(--primary); text-decoration: none; font-weight: 600">Log In</a>
           </p>
         </form>
       </section>
@@ -155,19 +69,7 @@
     <script src="js/state-manager.js"></script>
     <script src="js/supabase-client.js"></script>
     <script>
-      document.addEventListener("DOMContentLoaded", async () => {
-        // Wait for Supabase client to be available
-        let retries = 0;
-        while (!window.supabaseClient && retries < 10) {
-          await new Promise((resolve) => setTimeout(resolve, 100));
-          retries++;
-        }
-
-        // Initialize Supabase
-        if (window.supabaseClient) {
-          await window.supabaseClient.initialize();
-        }
-
+      document.addEventListener("DOMContentLoaded", () => {
         requestAnimationFrame(() => {
           document.body.classList.add("loaded");
         });
@@ -175,48 +77,39 @@
 
       async function handleSignup(event) {
         event.preventDefault();
-
+        
         const nameInput = event.target.querySelector('input[type="text"]');
         const emailInput = event.target.querySelector('input[type="email"]');
-        const passwordInput = event.target.querySelector(
-          'input[type="password"]'
-        );
+        const passwordInput = event.target.querySelector('input[type="password"]');
         const submitBtn = event.target.querySelector('button[type="submit"]');
-
-        const name = nameInput.value.trim();
-        const email = emailInput.value.trim();
-        const password = passwordInput.value;
-
-        if (!window.supabaseClient) {
-          alert("Authentication service not available");
-          return;
-        }
-
+        
         try {
-          // UI Loading State
           submitBtn.disabled = true;
-          submitBtn.textContent = "Creating account...";
+          submitBtn.textContent = 'Creating Account...';
 
-          // Sign up with Supabase
-          const result = await window.supabaseClient.signUp(email, password);
-
-          if (result.success) {
-            alert(
-              "Account created successfully! Please check your email to verify."
-            );
-            setTimeout(() => {
-              window.location.href = "login.html";
-            }, 2000);
-          } else {
-            alert(result.error || "Failed to create account");
+          if (!window.supabaseClient) {
+             throw new Error('System Error: Supabase client not loaded');
           }
+          await window.supabaseClient.initialize();
+
+          const { success, error } = await window.supabaseClient.signUp(emailInput.value, passwordInput.value);
+          if (!success) throw new Error(error);
+
+          StateManager.updateProfile({
+            name: nameInput.value,
+            email: emailInput.value,
+            joined: new Date().toLocaleDateString()
+          });
+          
+          alert('Account created! Please check your email to confirm, then log in.');
+          document.body.classList.remove("loaded");
+          setTimeout(() => {
+            window.location.href = 'login.html';
+          }, 500);
         } catch (e) {
-          console.error("Signup error:", e);
-          alert(e.message || "An error occurred during signup");
-        } finally {
-          // Reset UI
+          alert(e.message);
           submitBtn.disabled = false;
-          submitBtn.textContent = "Create Account";
+          submitBtn.textContent = 'Create Account';
         }
       }
     </script>
