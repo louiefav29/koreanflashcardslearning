@@ -1,8 +1,7 @@
 // Supabase Client Configuration
 class SupabaseClient {
   constructor() {
-    this.supabaseUrl =
-      "https://fdexmgdusliozhxnsovy.supabase.co";
+    this.supabaseUrl = "https://fdexmgdusliozhxnsovy.supabase.co";
     this.supabaseKey =
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZkZXhtZ2R1c2xpb3poeG5zb3Z5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc3MzE5MzEsImV4cCI6MjA4MzMwNzkzMX0.XMQTUGmwEEragSKemiKHkcnHvYRXBHFPXRy_3lLH2Fo";
     this.client = null;
@@ -93,13 +92,117 @@ class SupabaseClient {
 
   async resetPassword(email) {
     try {
-      const { data, error } = await this.client.auth.resetPasswordForEmail(email, {
-        redirectTo: window.location.origin + '/index.html',
-      });
+      const { data, error } = await this.client.auth.resetPasswordForEmail(
+        email,
+        {
+          redirectTo: window.location.origin + "/index.html",
+        }
+      );
       if (error) throw error;
       return { success: true, data };
     } catch (error) {
       return { success: false, error: error.message };
+    }
+  }
+
+  // Invite functionality
+  async generateInviteCode() {
+    if (!this.currentUser) {
+      return { success: false, error: "Not authenticated" };
+    }
+
+    try {
+      const inviteCode = this.generateRandomCode();
+
+      const { data, error } = await this.client
+        .from("invites")
+        .insert({
+          invite_code: inviteCode,
+          created_by: this.currentUser.id,
+        })
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      return { success: true, data: { inviteCode, ...data } };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  }
+
+  async useInviteCode(inviteCode) {
+    if (!this.currentUser) {
+      return { success: false, error: "Not authenticated" };
+    }
+
+    try {
+      // Check if invite exists and is valid
+      const { data: invite, error } = await this.client
+        .from("invites")
+        .select("*")
+        .eq("invite_code", inviteCode)
+        .eq("is_active", true)
+        .single();
+
+      if (error || !invite) {
+        return { success: false, error: "Invalid or expired invite code" };
+      }
+
+      // Check if expired
+      if (new Date() > new Date(invite.expires_at)) {
+        return { success: false, error: "Invite code has expired" };
+      }
+
+      // Mark invite as used
+      const { error: updateError } = await this.client
+        .from("invites")
+        .update({
+          used_by: this.currentUser.id,
+          used_at: new Date().toISOString(),
+          is_active: false,
+        })
+        .eq("id", invite.id);
+
+      if (updateError) throw updateError;
+
+      // Award bonus XP for using invite
+      await this.updateUserXP(50); // 50 XP bonus
+
+      return { success: true, data: invite };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  }
+
+  generateRandomCode() {
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    let code = "";
+    for (let i = 0; i < 8; i++) {
+      code += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return code;
+  }
+
+  async updateUserXP(amount) {
+    if (!this.currentUser) return;
+
+    try {
+      const { error } = await this.client
+        .from("users")
+        .update({
+          xp_total: this.client.rpc("increment", {
+            table_name: "users",
+            column_name: "xp_total",
+            row_id: this.currentUser.id,
+            increment_amount: amount,
+          }),
+        })
+        .eq("id", this.currentUser.id);
+
+      if (error) throw error;
+    } catch (error) {
+      console.error("Error updating XP:", error);
     }
   }
 

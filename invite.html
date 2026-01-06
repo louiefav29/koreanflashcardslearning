@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Invite Friends - 한국어 마스터</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons+Round&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="manifest" href="manifest.json" />
+    <style>
+      body {
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        padding: 1rem;
+      }
+      .invite-card {
+        width: 100%;
+        max-width: 500px;
+        margin: 1rem;
+      }
+      .invite-section {
+        margin-bottom: 2rem;
+        padding: 1.5rem;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--card-border-color);
+      }
+      .invite-code {
+        font-family: monospace;
+        font-size: 1.5rem;
+        letter-spacing: 0.2em;
+        text-align: center;
+        padding: 1rem;
+        background: var(--primary);
+        color: white;
+        border-radius: 8px;
+        margin: 1rem 0;
+      }
+      .btn {
+        width: 100%;
+        margin-bottom: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bubbles">
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+    </div>
+
+    <main style="width: 100%; display: flex; justify-content: center">
+      <section class="card invite-card">
+        <h1 style="text-align: center; margin-bottom: 2rem">Invite Friends</h1>
+
+        <!-- Generate Invite Section -->
+        <div class="invite-section">
+          <h2>Create Invite Code</h2>
+          <p style="color: var(--text-secondary); margin-bottom: 1rem">
+            Share this code with friends to earn 50 XP when they sign up!
+          </p>
+          <div class="invite-code" id="invite-code-display">Loading...</div>
+          <button class="btn" onclick="generateInvite()">
+            Generate New Code
+          </button>
+          <button class="btn secondary" onclick="copyInvite()">
+            Copy Code
+          </button>
+        </div>
+
+        <!-- Use Invite Section -->
+        <div class="invite-section">
+          <h2>Use Invite Code</h2>
+          <p style="color: var(--text-secondary); margin-bottom: 1rem">
+            Enter a friend's invite code to get bonus XP!
+          </p>
+          <form onsubmit="useInvite(event)">
+            <div style="margin-bottom: 1rem">
+              <label
+                style="
+                  display: block;
+                  color: var(--text-secondary);
+                  font-size: 0.85rem;
+                  margin-bottom: 0.5rem;
+                "
+              >
+                Invite Code
+              </label>
+              <input
+                type="text"
+                required
+                placeholder="Enter 8-character code"
+                maxlength="8"
+                style="
+                  width: 100%;
+                  background: rgba(255, 255, 255, 0.05);
+                  border: 1px solid var(--card-border-color);
+                  padding: 0.75rem;
+                  border-radius: 12px;
+                  color: var(--text-primary);
+                  outline: none;
+                  text-transform: uppercase;
+                  font-family: monospace;
+                "
+              />
+            </div>
+            <button type="submit" class="btn">Use Invite Code</button>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <script src="js/security.js"></script>
+    <script src="js/logger.js"></script>
+    <script src="js/state-manager.js"></script>
+    <script src="js/supabase-client.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", async () => {
+        if (window.supabaseClient) {
+          await window.supabaseClient.initialize();
+        }
+
+        requestAnimationFrame(() => {
+          document.body.classList.add("loaded");
+        });
+
+        // Load existing invite code if available
+        loadInviteCode();
+      });
+
+      let currentInviteCode = null;
+
+      async function generateInvite() {
+        if (!window.supabaseClient) {
+          alert("Authentication service not available");
+          return;
+        }
+
+        try {
+          const result = await window.supabaseClient.generateInviteCode();
+
+          if (result.success) {
+            currentInviteCode = result.data.inviteCode;
+            document.getElementById("invite-code-display").textContent =
+              currentInviteCode;
+            showToast("Invite code generated!", "success");
+          } else {
+            alert(result.error || "Failed to generate invite code");
+          }
+        } catch (e) {
+          alert(e.message || "An error occurred");
+        }
+      }
+
+      async function useInvite(event) {
+        event.preventDefault();
+
+        const codeInput = event.target.querySelector('input[type="text"]');
+        const submitBtn = event.target.querySelector('button[type="submit"]');
+        const code = codeInput.value.trim().toUpperCase();
+
+        if (!window.supabaseClient) {
+          alert("Authentication service not available");
+          return;
+        }
+
+        try {
+          submitBtn.disabled = true;
+          submitBtn.textContent = "Using code...";
+
+          const result = await window.supabaseClient.useInviteCode(code);
+
+          if (result.success) {
+            showToast("Invite code used! +50 XP awarded", "success");
+            codeInput.value = "";
+            setTimeout(() => {
+              window.location.href = "index.html";
+            }, 1500);
+          } else {
+            alert(result.error || "Failed to use invite code");
+          }
+        } catch (e) {
+          alert(e.message || "An error occurred");
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Use Invite Code";
+        }
+      }
+
+      function copyInvite() {
+        if (!currentInviteCode) {
+          alert("Please generate an invite code first");
+          return;
+        }
+
+        navigator.clipboard
+          .writeText(currentInviteCode)
+          .then(() => {
+            showToast("Invite code copied!", "success");
+          })
+          .catch(() => {
+            alert("Failed to copy invite code");
+          });
+      }
+
+      async function loadInviteCode() {
+        // This could load the user's existing active invite code
+        // For now, we'll just show a message
+        document.getElementById("invite-code-display").textContent =
+          'Click "Generate New Code"';
+      }
+
+      function showToast(message, type = "info") {
+        const container = document.getElementById("toast-container");
+        if (!container) {
+          alert(message);
+          return;
+        }
+
+        const toast = document.createElement("div");
+        const bgColor =
+          type === "error"
+            ? "rgba(220, 38, 38, 0.95)"
+            : type === "success"
+            ? "rgba(22, 163, 74, 0.95)"
+            : "rgba(30, 41, 59, 0.95)";
+
+        toast.style.cssText = `
+          background: ${bgColor};
+          color: white;
+          padding: 12px 24px;
+          border-radius: 12px;
+          margin-bottom: 10px;
+          box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+          backdrop-filter: blur(8px);
+          border: 1px solid rgba(255,255,255,0.1);
+          font-size: 0.9rem;
+          animation: slideIn 0.3s ease-out forwards;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        `;
+
+        const icon =
+          type === "error"
+            ? "error"
+            : type === "success"
+            ? "check_circle"
+            : "info";
+        toast.innerHTML = `<span class="material-icons-round" style="font-size: 1.2rem">${icon}</span> ${message}`;
+
+        container.appendChild(toast);
+
+        setTimeout(() => {
+          toast.style.opacity = "0";
+          toast.style.transform = "translateY(-10px)";
+          toast.style.transition = "all 0.3s ease";
+          setTimeout(() => toast.remove(), 300);
+        }, 3000);
+      }
+
+      // Inject animation styles
+      const style = document.createElement("style");
+      style.textContent = `
+        @keyframes slideIn {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+      `;
+      document.head.appendChild(style);
+    </script>
+  </body>
+</html>

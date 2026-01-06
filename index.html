@@ -16,7 +16,6 @@
     />
     <link rel="stylesheet" href="styles.css" />
     <link rel="manifest" href="manifest.json" />
-
   </head>
   <body>
     <div class="bubbles">
@@ -49,9 +48,7 @@
           onclick="showPatchNotes()"
         >
           <span class="material-icons-round">notifications_none</span>
-          <span
-            id="notification-badge"
-            class="notification-badge d-none"
+          <span id="notification-badge" class="notification-badge d-none"
             >1</span
           >
         </button>
@@ -90,9 +87,7 @@
             id="settings-lock-badge"
             class="notification-badge d-none bg-red"
             title="Strict Mode Active"
-            ><span class="material-icons-round icon-xs"
-              >lock</span
-            ></span
+            ><span class="material-icons-round icon-xs">lock</span></span
           >
         </button>
 
@@ -115,34 +110,22 @@
 
       <section class="stats-container" aria-label="Statistics Overview">
         <div class="stat-card">
-          <div
-            class="stat-icon-wrapper text-blue"
-          >
-            <span class="material-icons-round icon-lg"
-              >style</span
-            >
+          <div class="stat-icon-wrapper text-blue">
+            <span class="material-icons-round icon-lg">style</span>
           </div>
           <div class="stat-number" id="dash-stat-cards">0</div>
           <div class="stat-label">Cards Studied</div>
         </div>
         <div class="stat-card">
-          <div
-            class="stat-icon-wrapper text-green"
-          >
-            <span class="material-icons-round icon-lg"
-              >quiz</span
-            >
+          <div class="stat-icon-wrapper text-green">
+            <span class="material-icons-round icon-lg">quiz</span>
           </div>
           <div class="stat-number" id="dash-stat-quizzes">0</div>
           <div class="stat-label">Quizzes Completed</div>
         </div>
         <div class="stat-card">
-          <div
-            class="stat-icon-wrapper text-yellow"
-          >
-            <span class="material-icons-round icon-lg"
-              >keyboard</span
-            >
+          <div class="stat-icon-wrapper text-yellow">
+            <span class="material-icons-round icon-lg">keyboard</span>
           </div>
           <div class="stat-number" id="dash-stat-typing">0</div>
           <div class="stat-label">Typing Tests</div>
@@ -153,9 +136,7 @@
         <!-- Flashcards Section -->
         <section class="quiz-section quiz-fc">
           <div class="quiz-icon">
-            <span class="material-icons-round icon-xl"
-              >style</span
-            >
+            <span class="material-icons-round icon-xl">style</span>
           </div>
           <h2 class="quiz-title">Flashcards</h2>
           <p class="quiz-subtitle">
@@ -177,6 +158,22 @@
             </div>
           </div>
 
+          <button
+            class="icon-btn"
+            id="invite-btn"
+            onclick="window.location.href='invite.html'"
+            title="Invite Friends"
+          >
+            <span class="material-icons-round">person_add</span>
+          </button>
+          <button
+            class="icon-btn"
+            id="stats-btn"
+            onclick="showStats()"
+            title="Statistics"
+          >
+            <span class="material-icons-round">insights</span>
+          </button>
           <button class="start-quiz-btn" onclick="startFlashcards()">
             Start Flashcards
           </button>
@@ -185,9 +182,7 @@
         <!-- Multiple Choice Section -->
         <section class="quiz-section quiz-mc">
           <div class="quiz-icon">
-            <span class="material-icons-round icon-xl"
-              >quiz</span
-            >
+            <span class="material-icons-round icon-xl">quiz</span>
           </div>
           <h2 class="quiz-title">Multiple Choice</h2>
           <p class="quiz-subtitle">
@@ -212,9 +207,7 @@
         <!-- Typing Test Section -->
         <section class="quiz-section quiz-tt">
           <div class="quiz-icon">
-            <span class="material-icons-round icon-xl"
-              >keyboard</span
-            >
+            <span class="material-icons-round icon-xl">keyboard</span>
           </div>
           <h2 class="quiz-title">Typing Test</h2>
           <p class="quiz-subtitle">Practice Korean typing skills and speed</p>
@@ -268,14 +261,15 @@
     <script src="js/state-manager.js"></script>
     <script>
       // Service Worker Registration
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('service-worker.js')
-            .then(registration => {
-              Logger.info('ServiceWorker', 'Registration successful');
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker
+            .register("service-worker.js")
+            .then((registration) => {
+              Logger.info("ServiceWorker", "Registration successful");
             })
-            .catch(err => {
-              Logger.error('ServiceWorker', 'Registration failed', err);
+            .catch((err) => {
+              Logger.error("ServiceWorker", "Registration failed", err);
             });
         });
       }
@@ -285,19 +279,19 @@
       });
 
       async function loadComponents() {
-        const container = document.getElementById('modals-container');
+        const container = document.getElementById("modals-container");
         if (!container) return;
-        
+
         try {
-          const response = await fetch('modals.html');
-          if (!response.ok) throw new Error('Failed to load components');
+          const response = await fetch("modals.html");
+          if (!response.ok) throw new Error("Failed to load components");
           const html = await response.text();
           container.innerHTML = html;
-          
-          if (typeof loadSettings === 'function') loadSettings();
+
+          if (typeof loadSettings === "function") loadSettings();
           loadUserProfile(); // Re-run to update modal elements
         } catch (error) {
-          Logger.error('UI', 'Error loading components', error);
+          Logger.error("UI", "Error loading components", error);
         }
       }
 
@@ -330,16 +324,16 @@
 
         const emailInputs = [
           document.getElementById("settings-email"),
-          document.getElementById("patch-notes-email")
+          document.getElementById("patch-notes-email"),
         ];
-        emailInputs.forEach(input => {
+        emailInputs.forEach((input) => {
           if (input) input.value = profile.email;
         });
       }
 
       function saveAllSettings() {
         const nameInput = document.getElementById("settings-display-name");
-        
+
         const profile = StateManager.getUserProfile();
         const newName = nameInput?.value.trim();
         let nameChanged = false;
@@ -349,7 +343,11 @@
             const updated = StateManager.updateProfile({ name: newName });
             updateProfileDisplay(updated);
             nameChanged = true;
-            showToast("Profile Updated", `Your display name is now "${newName}"`, "success");
+            showToast(
+              "Profile Updated",
+              `Your display name is now "${newName}"`,
+              "success"
+            );
           } catch (e) {
             showToast("Update Failed", e.message, "error");
             // Reset input to valid value

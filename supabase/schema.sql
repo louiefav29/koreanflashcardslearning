@@ -14,6 +14,18 @@ CREATE TABLE users (
   preferences JSONB DEFAULT '{}'
 );
 
+-- Invites table for user referrals
+CREATE TABLE invites (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  invite_code TEXT UNIQUE NOT NULL,
+  created_by UUID REFERENCES users(id) ON DELETE CASCADE,
+  used_by UUID REFERENCES users(id) ON DELETE CASCADE,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  used_at TIMESTAMP WITH TIME ZONE,
+  expires_at TIMESTAMP WITH TIME ZONE DEFAULT (NOW() + INTERVAL '7 days'),
+  is_active BOOLEAN DEFAULT true
+);
+
 -- Flashcards table
 CREATE TABLE flashcards (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
