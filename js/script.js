@@ -375,6 +375,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Initialize Supabase first
   if (window.supabaseClient) {
     await window.supabaseClient.initialize();
+
+    // Auth Check: Redirect to login if no user session
+    if (!window.supabaseClient.currentUser) {
+      window.location.href = 'login.html';
+      return;
+    }
   }
 
   loadUserProgress();

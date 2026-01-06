@@ -7,6 +7,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Simple check for Supabase client
   console.log("window.supabaseClient:", window.supabaseClient);
 
+  // Fallback: If window.supabaseClient is missing but class exists
+  if (!window.supabaseClient && typeof SupabaseClient !== 'undefined') {
+    console.warn("window.supabaseClient missing, creating new instance...");
+    window.supabaseClient = new SupabaseClient();
+  }
+
   if (window.supabaseClient) {
     try {
       console.log("Initializing Supabase client...");
@@ -33,6 +39,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       const emailInput = loginForm.querySelector('input[type="email"]');
       const passwordInput = loginForm.querySelector('input[type="password"]');
       const submitBtn = loginForm.querySelector('button[type="submit"]');
+      const originalBtnText = submitBtn.textContent;
 
       const email = emailInput.value.trim();
       const password = passwordInput.value;
