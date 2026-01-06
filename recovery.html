@@ -12,6 +12,7 @@
     />
     <link rel="stylesheet" href="styles.css" />
     <link rel="manifest" href="manifest.json" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
     <style>
       body {
         align-items: center;
@@ -59,7 +60,11 @@
       </section>
     </main>
 
+    <div id="toast-container" class="toast-container" popover="manual"></div>
+
+    <script src="js/ui-utils.js"></script>
     <script src="js/logger.js"></script>
+    <script src="js/supabase-client.js"></script>
     <script>
       document.addEventListener("DOMContentLoaded", () => {
         requestAnimationFrame(() => {
@@ -67,13 +72,30 @@
         });
       });
 
-      function handleRecovery(event) {
+      async function handleRecovery(event) {
         event.preventDefault();
-        alert('Recovery email sent!');
-        document.body.classList.remove("loaded");
-        setTimeout(() => {
-          window.location.href = 'login.html';
-        }, 500);
+        const emailInput = event.target.querySelector('input[type="email"]');
+        const btn = event.target.querySelector('button');
+        const originalText = btn.textContent;
+
+        try {
+          btn.disabled = true;
+          btn.textContent = "Sending...";
+
+          if (!window.supabaseClient) window.supabaseClient = new SupabaseClient();
+          await window.supabaseClient.initialize();
+
+          const { success, error } = await window.supabaseClient.resetPassword(emailInput.value);
+          
+          if (!success) throw new Error(error);
+
+          showToast("Email Sent", "Check your inbox for the reset link.", "success");
+          setTimeout(() => window.location.href = 'login.html', 3000);
+        } catch (e) {
+          showToast("Error", e.message || "Failed to send recovery email", "error");
+          btn.disabled = false;
+          btn.textContent = originalText;
+        }
       }
     </script>
   </body>

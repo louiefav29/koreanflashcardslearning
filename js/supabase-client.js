@@ -91,6 +91,18 @@ class SupabaseClient {
     }
   }
 
+  async resetPassword(email) {
+    try {
+      const { data, error } = await this.client.auth.resetPasswordForEmail(email, {
+        redirectTo: window.location.origin + '/index.html',
+      });
+      if (error) throw error;
+      return { success: true, data };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  }
+
   // User profile methods
   async createUserProfile(user) {
     try {

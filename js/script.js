@@ -159,8 +159,14 @@ function enableBypassAndStart(auto = false) {
   );
 }
 
-function handleLogout() {
+async function handleLogout() {
   closeModal("logout-modal");
+  
+  // Sign out from Supabase to invalidate session
+  if (window.supabaseClient) {
+    await window.supabaseClient.signOut();
+  }
+
   document.body.classList.remove("loaded");
   setTimeout(() => {
     window.location.href = "login.html";

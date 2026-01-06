@@ -1,33 +1,20 @@
 document.addEventListener("DOMContentLoaded", async () => {
-  console.log("Login page loaded, checking for Supabase client...");
-
-  // Use the global Supabase client
-  let supabaseClient;
-
-  // Simple check for Supabase client
-  console.log("window.supabaseClient:", window.supabaseClient);
-
-  // Fallback: If window.supabaseClient is missing but class exists
-  if (!window.supabaseClient && typeof SupabaseClient !== 'undefined') {
-    console.warn("window.supabaseClient missing, creating new instance...");
-    window.supabaseClient = new SupabaseClient();
-  }
-
+  // Attempt early initialization, but don't block the UI if it fails yet
   if (window.supabaseClient) {
     try {
-      console.log("Initializing Supabase client...");
       await window.supabaseClient.initialize();
-      supabaseClient = window.supabaseClient.client;
-      console.log("Supabase client initialized successfully");
+      // Security: Ensure clean state by signing out any existing session
+      if (window.supabaseClient.currentUser) {
+        await window.supabaseClient.signOut();
+      }
     } catch (error) {
-      console.error("Failed to initialize Supabase:", error);
+      console.warn("Early Supabase init failed, will retry on submit:", error);
     }
   }
 
-  if (!supabaseClient) {
-    console.error("Supabase client not available");
-    showToast("System Error: Authentication service not available", "error");
-    return;
+  // Fallback: If window.supabaseClient is missing but class exists
+  if (!window.supabaseClient && typeof SupabaseClient !== 'undefined') {
+    window.supabaseClient = new SupabaseClient();
   }
 
   const loginForm = document.getElementById("login-form");
@@ -44,18 +31,29 @@ document.addEventListener("DOMContentLoaded", async () => {
       const email = emailInput.value.trim();
       const password = passwordInput.value;
 
-      if (!supabaseClient) {
-        showToast("System Error: Supabase not initialized", "error");
-        return;
-      }
-
       try {
         // UI Loading State
         submitBtn.disabled = true;
         submitBtn.textContent = "Logging in...";
 
+        // 1. Ensure Client Exists
+        if (!window.supabaseClient) {
+           if (typeof SupabaseClient !== 'undefined') {
+              window.supabaseClient = new SupabaseClient();
+           } else {
+              throw new Error("System Error: Supabase client script not loaded.");
+           }
+        }
+
+        // 2. Ensure Client is Initialized
+        if (!window.supabaseClient.client) {
+           await window.supabaseClient.initialize();
+        }
+
+        const client = window.supabaseClient.client;
+
         // Attempt Login
-        const { data, error } = await supabaseClient.auth.signInWithPassword({
+        const { data, error } = await client.auth.signInWithPassword({
           email: email,
           password: password,
         });
