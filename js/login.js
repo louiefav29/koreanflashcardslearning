@@ -1,12 +1,18 @@
 document.addEventListener("DOMContentLoaded", async () => {
+  console.log("Login page loaded, checking for Supabase client...");
+
   // Use the global Supabase client
   let supabaseClient;
 
   // Simple check for Supabase client
+  console.log("window.supabaseClient:", window.supabaseClient);
+
   if (window.supabaseClient) {
     try {
+      console.log("Initializing Supabase client...");
       await window.supabaseClient.initialize();
       supabaseClient = window.supabaseClient.client;
+      console.log("Supabase client initialized successfully");
     } catch (error) {
       console.error("Failed to initialize Supabase:", error);
     }

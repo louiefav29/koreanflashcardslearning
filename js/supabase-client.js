@@ -10,16 +10,23 @@ class SupabaseClient {
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZkZXhtZ2R1c2xpb3poeG5zb3Z5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc3MzE5MzEsImV4cCI6MjA4MzMwNzkzMX0.XMQTUGmwEEragSKemiKHkcnHvYRXBHFPXRy_3lLH2Fo";
     this.client = null;
     this.currentUser = null;
+    console.log("SupabaseClient constructor called");
   }
 
   async initialize() {
+    console.log("Initializing Supabase client...");
     try {
       // Load Supabase library
-      if (typeof supabase === "undefined") {
+      if (typeof window.supabase === "undefined") {
+        console.log("Loading Supabase library...");
         await this.loadSupabaseScript();
       }
 
-      this.client = supabase.createClient(this.supabaseUrl, this.supabaseKey);
+      this.client = window.supabase.createClient(
+        this.supabaseUrl,
+        this.supabaseKey
+      );
+      console.log("Supabase client created successfully");
 
       // Check for existing session
       const {
@@ -27,8 +34,10 @@ class SupabaseClient {
       } = await this.client.auth.getSession();
       if (session) {
         this.currentUser = session.user;
+        console.log("Found existing session for user:", this.currentUser.email);
       }
 
+      console.log("Supabase initialization complete");
       return true;
     } catch (error) {
       console.error("Supabase initialization failed:", error);
