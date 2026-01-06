@@ -2,18 +2,17 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Use the global Supabase client
   let supabaseClient;
 
-  // Wait for Supabase client to be available
-  let retries = 0;
-  while (!window.supabaseClient && retries < 10) {
-    await new Promise((resolve) => setTimeout(resolve, 100));
-    retries++;
+  // Simple check for Supabase client
+  if (window.supabaseClient) {
+    try {
+      await window.supabaseClient.initialize();
+      supabaseClient = window.supabaseClient.client;
+    } catch (error) {
+      console.error("Failed to initialize Supabase:", error);
+    }
   }
 
-  // Wait for Supabase client to initialize
-  if (window.supabaseClient) {
-    await window.supabaseClient.initialize();
-    supabaseClient = window.supabaseClient.client;
-  } else {
+  if (!supabaseClient) {
     console.error("Supabase client not available");
     showToast("System Error: Authentication service not available", "error");
     return;
