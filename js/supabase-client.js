@@ -48,6 +48,9 @@ class SupabaseClient {
       const { data, error } = await this.client.auth.signUp({
         email,
         password,
+        options: {
+          emailRedirectTo: "https://koreanflashcardslearning.netlify.app/login.html",
+        },
       });
 
       if (error) throw error;
@@ -95,7 +98,7 @@ class SupabaseClient {
       const { data, error } = await this.client.auth.resetPasswordForEmail(
         email,
         {
-          redirectTo: window.location.origin + "/index.html",
+          redirectTo: "https://koreanflashcardslearning.netlify.app/index.html",
         }
       );
       if (error) throw error;
