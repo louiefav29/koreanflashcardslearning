@@ -61,7 +61,7 @@ supabase functions deploy
 Your app will be available at:
 
 ```
-https://fdexmgdusliozhxnsovy.supabase.co/storage/v1/object/public/website/index.html
+https://fdexmgdusliozhxsnsovy.supabase.co/storage/v1/object/public/website/index.html
 ```
 
 ### 6. Custom Domain (Optional)
